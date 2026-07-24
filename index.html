@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ron Pandolfi — Beamline Controls, ALS</title>
+    <title>Ronald J. Pandolfi — Beamline Controls, ALS · LBNL</title>
+    <meta name="description" content="Ronald J. Pandolfi builds control systems and scientific software for synchrotron beamlines at the Advanced Light Source, Lawrence Berkeley National Laboratory." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -24,33 +25,23 @@
     <!-- synoptic nav -->
     <nav class="synoptic" aria-label="Site sections as beamline schematic">
       <div class="synoptic-inner" id="synoptic"></div>
-      <div class="synoptic-caption mono">SYNOPTIC — select an element to navigate</div>
     </nav>
 
     <main>
       <!-- hero -->
       <section class="hero" id="about">
         <div class="hero-text">
-          <p class="eyebrow mono">LAWRENCE BERKELEY NATIONAL LABORATORY · ADVANCED LIGHT SOURCE</p>
-          <h1>Ron Pandolfi</h1>
+          <p class="eyebrow mono">CAMERA · AMCR · LAWRENCE BERKELEY NATIONAL LABORATORY</p>
+          <h1>Ronald J. Pandolfi</h1>
           <p class="lede">
-            I build the control systems and user interfaces that run synchrotron beamlines —
-            from EPICS IOCs and configuration management to Lightfall, a unified control
-            dashboard for the ALS.
+            I build control systems and scientific software for synchrotron beamlines at the
+            Advanced Light Source. My work spans beamline control UIs, autonomous experiment
+            orchestration, and the infrastructure that keeps instruments and their software
+            reproducible.
           </p>
-        </div>
-        <div class="panel hero-beam">
-          <div class="panel-head">
-            <span class="panel-title">ALS BEAM CURRENT — TODAY</span>
-            <span class="tag tag-live">LIVE</span>
-          </div>
-          <img id="beamplot" alt="ALS storage ring beam current, today" loading="lazy" />
-          <div class="readout-row" id="readouts">
-            <div class="readout"><span class="readout-label">RING CURRENT</span><span class="readout-value mono" id="ro-current">—</span><span class="tag tag-sim">SIM</span></div>
-            <div class="readout"><span class="readout-label">LIFETIME</span><span class="readout-value mono" id="ro-lifetime">—</span><span class="tag tag-sim">SIM</span></div>
-            <div class="readout"><span class="readout-label">ENERGY</span><span class="readout-value mono">1.90 GeV</span></div>
-          </div>
-          <p class="footnote">Plot: real, from ALS operations archive. Numeric readouts: simulated.</p>
+          <p class="hero-awards mono">
+            HALBACH AWARD — INNOVATIVE INSTRUMENTATION (COSMIC-SCATTERING) · R&amp;D 100 — GPCAM
+          </p>
         </div>
       </section>
 
@@ -88,28 +79,43 @@
         </div>
         <div class="card-grid">
           <article class="panel card">
-            <div class="panel-head"><span class="panel-title">LIGHTFALL</span><span class="tag tag-live">ACTIVE</span></div>
-            <p>A unified control dashboard for ALS beamlines. Plugin architecture, live plotting, and a consistent operator experience across endstations.</p>
-            <p class="card-meta mono">Python · Qt · EPICS · Bluesky</p>
+            <div class="panel-head"><span class="panel-title"><a href="https://github.com/als-controls/lightfall">LIGHTFALL</a></span><span class="tag tag-live">ACTIVE</span></div>
+            <p>A modern, unified control platform for synchrotron lightsource facilities — API-first, plugin-based, LLM-addressable. In commissioning at COSMIC-Scattering.</p>
+            <p class="card-meta mono">Python · EPICS · Bluesky · NATS</p>
           </article>
           <article class="panel card">
-            <div class="panel-head"><span class="panel-title">CSM</span><span class="tag tag-live">ACTIVE</span></div>
-            <p>Configuration management for the Beamline Control System: declarative device configs that generate EPICS IOCs through a plugin ecosystem.</p>
-            <p class="card-meta mono">Python · EPICS · GitLab CI</p>
+            <div class="panel-head"><span class="panel-title">CSM</span><span class="tag">INTERNAL</span></div>
+            <p>Configuration management for beamline control systems — declarative device configs that provision EPICS IOCs across the facility, driving the ALS controls-modernization rollout.</p>
+            <p class="card-meta mono">Python · EPICS · Ansible/AWX</p>
           </article>
           <article class="panel card">
-            <div class="panel-head"><span class="panel-title">TSUCHINOKO</span></div>
-            <p>Desktop application for adaptive, autonomous experiments driven by gpCAM — steering measurements toward where the information is.</p>
+            <div class="panel-head"><span class="panel-title">IOCULAR</span><span class="tag">INTERNAL</span></div>
+            <p>IOC management agent for EPICS control systems — fleet-wide remote monitoring, control, log streaming, and deployment.</p>
+            <p class="card-meta mono">Python · EPICS</p>
+          </article>
+          <article class="panel card">
+            <div class="panel-head"><span class="panel-title"><a href="https://github.com/lbl-camera/gpCAM">GPCAM</a></span><span class="tag tag-live">R&amp;D 100</span></div>
+            <p>Autonomous experimentation and uncertainty quantification engine (CAMERA) — Gaussian-process-driven adaptive measurement.</p>
+            <p class="card-meta mono">Python · HPC</p>
+          </article>
+          <article class="panel card">
+            <div class="panel-head"><span class="panel-title"><a href="https://github.com/lbl-camera/tsuchinoko">TSUCHINOKO</a></span></div>
+            <p>Adaptive-experiment Qt application driving gpCAM autonomous measurement at the beamline.</p>
             <p class="card-meta mono">Python · Qt · gpCAM</p>
           </article>
           <article class="panel card">
-            <div class="panel-head"><span class="panel-title">XI-CAM</span></div>
-            <p>Extensible platform for synchrotron data analysis and visualization, used across multiple beamlines and techniques.</p>
+            <div class="panel-head"><span class="panel-title"><a href="https://github.com/Xi-CAM/Xi-cam">XI-CAM</a></span></div>
+            <p>Extensible platform for synchrotron data reduction, visualization, and management.</p>
             <p class="card-meta mono">Python · Qt</p>
           </article>
           <article class="panel card">
-            <div class="panel-head"><span class="panel-title">BCSOPHYD-ZMQ</span></div>
-            <p>Bridge between the LabVIEW-based Beamline Control System and the Bluesky experiment orchestration stack, over ZeroMQ.</p>
+            <div class="panel-head"><span class="panel-title"><a href="https://github.com/lbl-camera/Ascribe-XR">ASCRIBE-XR</a></span></div>
+            <p>Scientific data visualization in VR (Godot 4 + OpenXR), with an HTTP specimen server for meshes, volumes, and point clouds.</p>
+            <p class="card-meta mono">Godot · OpenXR · Python</p>
+          </article>
+          <article class="panel card">
+            <div class="panel-head"><span class="panel-title"><a href="https://github.com/ronpandolfi/bcsophyd-zmq">BCSOPHYD-ZMQ</a></span></div>
+            <p>LabVIEW ↔ Bluesky bridge over ZMQ for legacy beamline control integration.</p>
             <p class="card-meta mono">Python · LabVIEW · ZMQ</p>
           </article>
         </div>
@@ -119,16 +125,24 @@
       <section class="section" id="publications">
         <div class="section-head">
           <h2>Publications &amp; talks</h2>
-          <p class="section-sub">Selected. Full list on ORCID / Google Scholar.</p>
+          <p class="section-sub">Selected — full list on <a href="https://scholar.google.com/citations?user=HilPbaoAAAAJ">Google Scholar</a>.</p>
         </div>
         <ul class="pub-list">
           <li class="pub">
             <span class="pub-year mono">2026</span>
-            <span class="pub-body"><strong>Lightfall: a unified control dashboard for synchrotron beamlines.</strong> Manuscript in preparation.</span>
+            <span class="pub-body"><strong>Lightfall: An API-first, LLM-addressable control platform for synchrotron beamlines.</strong> Pandolfi, Guenzing, Noack, Morley, English. <a href="https://arxiv.org/abs/2606.06711">arXiv:2606.06711</a>.</span>
           </li>
           <li class="pub">
-            <span class="pub-year mono">—</span>
-            <span class="pub-body"><em>Placeholder — selected papers and invited talks go here.</em></span>
+            <span class="pub-year mono">2025</span>
+            <span class="pub-body"><strong>ASCRIBE-XR: Extended Reality for Visualization of Scientific Images.</strong> Pandolfi, Todd, Donatelli, Ushizima. Proc. SC'25 Workshops. <a href="https://doi.org/10.1145/3731599.3767368">DOI:10.1145/3731599.3767368</a> — presented at SC'25.</span>
+          </li>
+          <li class="pub">
+            <span class="pub-year mono">2025</span>
+            <span class="pub-body"><strong>gp2Scale: Compactly-supported non-stationary kernels and distributed computing for exact Gaussian processes on 10 million data points.</strong> Noack, Risser, Luo, Tekriwal, Pandolfi. <a href="https://arxiv.org/abs/2512.06143">arXiv:2512.06143</a>.</span>
+          </li>
+          <li class="pub">
+            <span class="pub-year mono">2018</span>
+            <span class="pub-body"><strong>Xi-cam: a versatile interface for data visualization and analysis.</strong> <em>Journal of Synchrotron Radiation</em> — cited 100+.</span>
           </li>
         </ul>
       </section>
@@ -139,8 +153,9 @@
       <span class="statusbar-item mono">CONTACT:</span>
       <a class="statusbar-link" href="mailto:ronpandolfi@lbl.gov">EMAIL</a>
       <a class="statusbar-link" href="https://github.com/ronpandolfi" rel="me">GITHUB</a>
-      <a class="statusbar-link" href="https://orcid.org/" rel="me">ORCID</a>
-      <a class="statusbar-link" href="https://www.linkedin.com/" rel="me">LINKEDIN</a>
+      <a class="statusbar-link" href="https://orcid.org/0000-0003-0824-8548" rel="me">ORCID</a>
+      <a class="statusbar-link" href="https://scholar.google.com/citations?user=HilPbaoAAAAJ" rel="me">SCHOLAR</a>
+      <a class="statusbar-link" href="https://www.linkedin.com/in/ronald-pandolfi-39216435" rel="me">LINKEDIN</a>
       <span class="statusbar-spacer"></span>
       <span class="statusbar-item">No trackers. Agent runs locally.</span>
     </footer>

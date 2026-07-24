@@ -1,6 +1,6 @@
 import './style.css';
 import { renderSynoptic } from './synoptic';
-import { startSimReadouts, loadBeamPlot, startClock } from './sim';
+import { startClock } from './sim';
 import { setupAgentConsole } from './agent';
 
 // Theme toggle
@@ -15,6 +15,4 @@ document.getElementById('theme-toggle')!.addEventListener('click', () => {
 
 renderSynoptic(document.getElementById('synoptic')!);
 startClock();
-startSimReadouts();
-loadBeamPlot();
 setupAgentConsole();

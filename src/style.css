@@ -72,21 +72,30 @@ a { color: var(--cyan); }
 .led-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
 
 /* ---------- synoptic ---------- */
-.synoptic { background: var(--bg-raise); border-bottom: 1px solid var(--line); padding: 0.75rem 1.25rem 0.4rem; }
-.synoptic-inner { max-width: 980px; margin: 0 auto; }
+/* full-bleed: the beam extends in from the left screen edge */
+.synoptic { background: var(--bg-raise); border-bottom: 1px solid var(--line); padding: 0.6rem 0 0.2rem; }
 .synoptic-inner svg { width: 100%; height: auto; display: block; }
-.synoptic-caption { max-width: 980px; margin: 0.2rem auto 0; font-size: 0.65rem; letter-spacing: 0.08em; color: var(--dim); }
 .syn-el { cursor: pointer; }
 .syn-el .syn-shape { fill: var(--panel); stroke: var(--dim); stroke-width: 1.5; transition: stroke 0.15s, fill 0.15s; }
-.syn-el text { fill: var(--dim); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; }
+.syn-el text { fill: var(--dim); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; }
 .syn-el:hover .syn-shape, .syn-el:focus .syn-shape { stroke: var(--amber); }
 .syn-el:hover text, .syn-el:focus text { fill: var(--text); }
-.syn-beam { stroke: var(--amber); stroke-width: 2; }
-.syn-beam-glow { stroke: var(--amber); stroke-width: 6; opacity: 0.18; }
+.syn-mirror { fill: var(--dim); }
+.syn-el:hover .syn-mirror, .syn-el:focus .syn-mirror { fill: var(--amber); }
+.syn-sample { fill: var(--bg-raise); }
+.syn-det { fill: var(--panel); }
+.syn-beam { stroke: var(--amber); stroke-width: 1.5; }
+.syn-beam-glow { stroke: var(--amber); stroke-width: 6; opacity: 0.15; }
+.syn-scatter { stroke: var(--amber); stroke-width: 1; opacity: 0.25; stroke-dasharray: 3 4; }
+.syn-direct { opacity: 0.4; stroke-dasharray: none; }
+.syn-photon { fill: var(--amber); filter: drop-shadow(0 0 4px var(--amber)); }
+.syn-photon-weak { filter: drop-shadow(0 0 2px var(--amber)); }
+.syn-flash { fill: var(--amber); }
 
 /* ---------- layout ---------- */
 main { max-width: 980px; margin: 0 auto; padding: 0 1.25rem; }
-.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; padding: 3.5rem 0 1rem; }
+.hero { padding: 3.5rem 0 1rem; }
+.hero-awards { font-size: 0.65rem; letter-spacing: 0.08em; color: var(--dim); margin-top: 1.2rem; }
 .eyebrow { font-size: 0.68rem; letter-spacing: 0.12em; color: var(--amber); margin-bottom: 0.9rem; }
 h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 1rem; }
 .lede { color: var(--dim); font-size: 1.05rem; max-width: 34rem; }
@@ -111,12 +120,6 @@ h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
 .tag-sim { color: var(--amber); border-color: var(--amber); }
 .tag-err { color: var(--red); border-color: var(--red); }
 
-.hero-beam img { width: 100%; display: block; background: #fff; min-height: 120px; }
-.hero-beam img:not([src]) { display: none; }
-.readout-row { display: flex; gap: 1.5rem; padding: 0.7rem 0.9rem; border-top: 1px solid var(--line); flex-wrap: wrap; }
-.readout { display: flex; align-items: baseline; gap: 0.5rem; }
-.readout-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; color: var(--dim); }
-.readout-value { color: var(--amber); font-size: 0.95rem; font-weight: 500; min-width: 5.5ch; }
 .footnote { font-size: 0.72rem; color: var(--dim); padding: 0.5rem 0.9rem 0.7rem; }
 
 /* ---------- console ---------- */
@@ -158,7 +161,10 @@ h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
 
 :focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
 
+.panel-title a { color: inherit; text-decoration: none; }
+.panel-title a:hover, .panel-title a:focus-visible { color: var(--cyan); text-decoration: underline; }
+
 @media (max-width: 760px) {
-  .hero { grid-template-columns: 1fr; padding-top: 2.5rem; }
+  .hero { padding-top: 2.5rem; }
   .statusbar { flex-wrap: wrap; gap: 0.5rem 1rem; }
 }
