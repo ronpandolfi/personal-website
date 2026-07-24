@@ -77,7 +77,9 @@ a { color: var(--cyan); }
 .synoptic-inner svg { width: 100%; height: auto; display: block; }
 .syn-el { cursor: pointer; }
 .syn-el .syn-shape { fill: var(--panel); stroke: var(--dim); stroke-width: 1.5; transition: stroke 0.15s, fill 0.15s; }
+.syn-el text { fill: var(--dim); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; }
 .syn-el:hover .syn-shape, .syn-el:focus .syn-shape { stroke: var(--amber); }
+.syn-el:hover text, .syn-el:focus text { fill: var(--text); }
 .syn-mirror, .syn-magnet { fill: var(--dim); stroke-width: 0.75; }
 .syn-el:hover .syn-mirror, .syn-el:focus .syn-mirror,
 .syn-el:hover .syn-magnet, .syn-el:focus .syn-magnet { fill: var(--amber); }
@@ -94,7 +96,16 @@ a { color: var(--cyan); }
 /* ---------- layout ---------- */
 main { max-width: 980px; margin: 0 auto; padding: 0 1.25rem; }
 .hero { padding: 3.5rem 0 1rem; }
-.hero-awards { font-size: 0.65rem; letter-spacing: 0.08em; color: var(--dim); margin-top: 1.2rem; }
+.award-row { display: flex; gap: 0.75rem; margin-top: 1.4rem; flex-wrap: wrap; }
+.award-chip {
+  display: inline-flex; align-items: baseline; gap: 0.5rem;
+  border: 1px solid var(--amber); padding: 0.45rem 0.8rem;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.08em; color: var(--amber);
+}
+.award-mark { font-size: 0.6rem; }
+.award-sub { color: var(--dim); font-weight: 400; font-size: 0.65rem; letter-spacing: 0.05em; }
+.statusbar-value { color: var(--amber); margin: 0 0.45rem 0 0.2rem; }
 .eyebrow { font-size: 0.68rem; letter-spacing: 0.12em; color: var(--amber); margin-bottom: 0.9rem; }
 h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 1rem; }
 .lede { color: var(--dim); font-size: 1.05rem; max-width: 34rem; }
@@ -120,6 +131,26 @@ h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
 .tag-err { color: var(--red); border-color: var(--red); }
 
 .footnote { font-size: 0.72rem; color: var(--dim); padding: 0.5rem 0.9rem 0.7rem; }
+
+/* ---------- floating console dock ---------- */
+.console-dock {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 50;
+  width: min(430px, calc(100vw - 2rem));
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  display: flex; flex-direction: column;
+}
+.console-dock-head {
+  display: flex; align-items: center; gap: 0.75rem;
+  width: 100%; background: var(--bg-raise); border: none;
+  border-bottom: 1px solid var(--line); padding: 0.55rem 0.9rem;
+  cursor: pointer; text-align: left; color: inherit; font: inherit;
+}
+.console-dock-head .panel-title { flex: 1; }
+.console-caret { color: var(--dim); font-size: 0.7rem; transition: transform 0.2s; }
+.console-dock.collapsed .console-body { display: none; }
+.console-dock.collapsed .console-dock-head { border-bottom: none; }
+.console-dock.collapsed .console-caret { transform: rotate(180deg); }
+.console-dock .console-log { height: 240px; }
 
 /* ---------- console ---------- */
 .console-log {

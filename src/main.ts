@@ -1,6 +1,7 @@
 import './style.css';
 import { renderSynoptic } from './synoptic';
 import { startClock } from './sim';
+import { startBeamStatus } from './beamstatus';
 import { setupAgentConsole } from './agent';
 
 // Theme toggle
@@ -15,4 +16,13 @@ document.getElementById('theme-toggle')!.addEventListener('click', () => {
 
 renderSynoptic(document.getElementById('synoptic')!);
 startClock();
+startBeamStatus();
 setupAgentConsole();
+
+// console dock collapse/expand
+const dock = document.getElementById('console')!;
+const dockToggle = document.getElementById('console-toggle')!;
+dockToggle.addEventListener('click', () => {
+  const collapsed = dock.classList.toggle('collapsed');
+  dockToggle.setAttribute('aria-expanded', String(!collapsed));
+});

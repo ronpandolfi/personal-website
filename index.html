@@ -18,6 +18,7 @@
       <span class="statusbar-title">RPANDOLFI // OPS</span>
       <span class="statusbar-item mono" id="clock" aria-hidden="true"></span>
       <span class="statusbar-spacer"></span>
+      <span class="statusbar-item">ALS RING: <span class="statusbar-value" id="beam-value">—</span><span class="tag tag-sim" id="beam-tag">SIM</span></span>
       <span class="statusbar-item"><span class="led led-green" aria-hidden="true"></span>SITE: OPERATIONAL</span>
       <button class="statusbar-btn" id="theme-toggle" aria-label="Toggle color theme">THEME</button>
     </header>
@@ -39,36 +40,10 @@
             orchestration, and the infrastructure that keeps instruments and their software
             reproducible.
           </p>
-          <p class="hero-awards mono">
-            HALBACH AWARD — INNOVATIVE INSTRUMENTATION (COSMIC-SCATTERING) · R&amp;D 100 — GPCAM
-          </p>
-        </div>
-      </section>
-
-      <!-- agent console -->
-      <section class="section" id="console">
-        <div class="section-head">
-          <h2>Operator console</h2>
-          <p class="section-sub">
-            A small language model that runs entirely in your browser on WebGPU — no server,
-            nothing leaves your machine. It knows my projects; ask it how to get started with
-            gpCAM or what Lightfall is.
-          </p>
-        </div>
-        <div class="panel console-panel">
-          <div class="panel-head">
-            <span class="panel-title">AGENT — LOCAL LLM</span>
-            <span class="tag" id="agent-status">OFFLINE</span>
+          <div class="award-row">
+            <span class="award-chip"><span class="award-mark" aria-hidden="true">◆</span>HALBACH AWARD<span class="award-sub">Innovative Instrumentation · COSMIC-Scattering</span></span>
+            <span class="award-chip"><span class="award-mark" aria-hidden="true">◆</span>R&amp;D 100<span class="award-sub">gpCAM</span></span>
           </div>
-          <div class="console-log mono" id="console-log">
-            <div class="log-line log-dim">agent offline. boot to load model (~1 GB, cached after first run).</div>
-          </div>
-          <form class="console-input-row" id="console-form">
-            <button type="button" class="btn btn-primary" id="boot-btn">BOOT AGENT</button>
-            <input class="console-input mono" id="console-input" type="text" placeholder="ask about my work…" disabled autocomplete="off" />
-            <button type="submit" class="btn" id="send-btn" disabled>SEND</button>
-          </form>
-          <p class="footnote">Small local model — answers may be imperfect. Requires WebGPU.</p>
         </div>
       </section>
 
@@ -147,6 +122,27 @@
         </ul>
       </section>
     </main>
+
+    <!-- floating operator console dock -->
+    <aside class="panel console-dock collapsed" id="console" aria-label="Operator console — local LLM agent">
+      <button class="console-dock-head" id="console-toggle" aria-expanded="false">
+        <span class="panel-title">AGENT — LOCAL LLM</span>
+        <span class="tag" id="agent-status">OFFLINE</span>
+        <span class="console-caret mono" aria-hidden="true">▴</span>
+      </button>
+      <div class="console-body">
+        <div class="console-log mono" id="console-log">
+          <div class="log-line log-dim">local model, runs on your GPU via WebGPU — nothing leaves your machine.</div>
+          <div class="log-line log-dim">boot to load (~1 GB, cached after first run), then ask about my projects, gpCAM, Lightfall…</div>
+        </div>
+        <form class="console-input-row" id="console-form">
+          <button type="button" class="btn btn-primary" id="boot-btn">BOOT AGENT</button>
+          <input class="console-input mono" id="console-input" type="text" placeholder="ask about my work…" disabled autocomplete="off" />
+          <button type="submit" class="btn" id="send-btn" disabled>SEND</button>
+        </form>
+        <p class="footnote">Small local model — answers may be imperfect. Requires WebGPU.</p>
+      </div>
+    </aside>
 
     <!-- footer status bar -->
     <footer class="statusbar statusbar-footer" id="contact">

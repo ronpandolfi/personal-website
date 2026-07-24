@@ -6,24 +6,23 @@
 // reduced motion). No labels — the symbolism speaks for itself.
 
 const W = 1200;
-const H = 58;
+const H = 72;
 const Y = 30; // beam axis
 const YU = 14; // periscope upper level
 
 // undulator span + wiggle
-const UND = { x0: 145, x1: 275 };
+const UND = { x0: 165, x1: 245 };
 const WIGGLE: [number, number][] = [
-  [150, Y],
-  [165, Y - 5], [180, Y + 5], [195, Y - 5], [210, Y + 5],
-  [225, Y - 5], [240, Y + 5], [255, Y - 5],
-  [270, Y],
+  [168, Y],
+  [178, Y - 4], [190, Y + 4], [202, Y - 4], [214, Y + 4], [226, Y - 4],
+  [240, Y],
 ];
 
-// periscope corners: up, across, down, right
-const M1: [number, number] = [500, Y];
-const M2: [number, number] = [500, YU];
-const M3: [number, number] = [560, YU];
-const M4: [number, number] = [560, Y];
+// periscope corners: up, across, down, right (compact)
+const M1: [number, number] = [505, Y];
+const M2: [number, number] = [505, YU];
+const M3: [number, number] = [541, YU];
+const M4: [number, number] = [541, Y];
 
 const SLIT_X = 670;
 const SAMPLE_X = 800;
@@ -47,9 +46,9 @@ function mirror(x: number, y: number, angle: number): string {
 
 function undulatorMagnets(): string {
   const parts: string[] = [];
-  for (let x = UND.x0; x < UND.x1; x += 20) {
-    parts.push(`<rect class="syn-shape syn-magnet" x="${x}" y="${Y - 14}" width="14" height="6"/>`);
-    parts.push(`<rect class="syn-shape syn-magnet" x="${x + 10}" y="${Y + 8}" width="14" height="6"/>`);
+  for (let x = UND.x0; x < UND.x1; x += 16) {
+    parts.push(`<rect class="syn-shape syn-magnet" x="${x}" y="${Y - 11}" width="11" height="5"/>`);
+    parts.push(`<rect class="syn-shape syn-magnet" x="${x + 8}" y="${Y + 6}" width="11" height="5"/>`);
   }
   return parts.join('');
 }
@@ -65,17 +64,17 @@ interface Element {
 function elements(): Element[] {
   return [
     {
-      label: 'Undulator — about',
+      label: 'ABOUT',
       target: '#about',
       cx: (UND.x0 + UND.x1) / 2,
-      halfWidth: 75,
+      halfWidth: 55,
       shape: undulatorMagnets(),
     },
     {
-      label: 'Mirrors — operator console',
+      label: 'CONSOLE',
       target: '#console',
-      cx: 530,
-      halfWidth: 45,
+      cx: 523,
+      halfWidth: 40,
       shape:
         mirror(M1[0], M1[1], -45) +
         mirror(M2[0], M2[1], -45) +
@@ -83,7 +82,7 @@ function elements(): Element[] {
         mirror(M4[0], M4[1], 45),
     },
     {
-      label: 'Slit — projects',
+      label: 'PROJECTS',
       target: '#projects',
       cx: SLIT_X,
       halfWidth: 30,
@@ -92,7 +91,7 @@ function elements(): Element[] {
         `<rect class="syn-shape" x="${SLIT_X - 2.5}" y="${Y + 4}" width="5" height="15"/>`,
     },
     {
-      label: 'Sample — publications',
+      label: 'PUBLICATIONS',
       target: '#publications',
       cx: SAMPLE_X,
       halfWidth: 30,
@@ -105,7 +104,7 @@ function elements(): Element[] {
         `L${SAMPLE_X - 5},${Y + 5} Z"/>`,
     },
     {
-      label: 'Detector — contact',
+      label: 'CONTACT',
       target: '#contact',
       cx: DET_X + 5,
       halfWidth: 35,
@@ -129,9 +128,9 @@ export function renderSynoptic(container: HTMLElement) {
   for (const el of elements()) {
     parts.push(
       `<g class="syn-el" role="link" tabindex="0" data-target="${el.target}" aria-label="${el.label}">` +
-        `<title>${el.label}</title>` +
         `<rect class="syn-hit" x="${el.cx - el.halfWidth}" y="0" width="${el.halfWidth * 2}" height="${H}" fill="transparent"/>` +
         el.shape +
+        `<text x="${el.cx}" y="${H - 6}" text-anchor="middle">${el.label}</text>` +
         `</g>`,
     );
   }
@@ -162,7 +161,17 @@ export function renderSynoptic(container: HTMLElement) {
 
   container.querySelectorAll<SVGGElement>('.syn-el').forEach((g) => {
     const go = () => {
-      document.querySelector(g.dataset.target!)?.scrollIntoView({ behavior: 'smooth' });
+      const target = document.querySelector(g.dataset.target!);
+      if (!target) return;
+      if (target.classList.contains('console-dock')) {
+        // the console is a floating dock: open it instead of scrolling
+        target.classList.remove('collapsed');
+        const input = target.querySelector<HTMLInputElement>('#console-input');
+        if (input && !input.disabled) input.focus();
+        else target.querySelector<HTMLButtonElement>('#boot-btn')?.focus();
+        return;
+      }
+      target.scrollIntoView({ behavior: 'smooth' });
     };
     g.addEventListener('click', go);
     g.addEventListener('keydown', (e) => {
