@@ -73,15 +73,14 @@ a { color: var(--cyan); }
 
 /* ---------- synoptic ---------- */
 /* full-bleed: the beam extends in from the left screen edge */
-.synoptic { background: var(--bg-raise); border-bottom: 1px solid var(--line); padding: 0.6rem 0 0.2rem; }
+.synoptic { background: var(--bg-raise); border-bottom: 1px solid var(--line); padding: 0.35rem 0 0.15rem; }
 .synoptic-inner svg { width: 100%; height: auto; display: block; }
 .syn-el { cursor: pointer; }
 .syn-el .syn-shape { fill: var(--panel); stroke: var(--dim); stroke-width: 1.5; transition: stroke 0.15s, fill 0.15s; }
-.syn-el text { fill: var(--dim); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; }
 .syn-el:hover .syn-shape, .syn-el:focus .syn-shape { stroke: var(--amber); }
-.syn-el:hover text, .syn-el:focus text { fill: var(--text); }
-.syn-mirror { fill: var(--dim); }
-.syn-el:hover .syn-mirror, .syn-el:focus .syn-mirror { fill: var(--amber); }
+.syn-mirror, .syn-magnet { fill: var(--dim); stroke-width: 0.75; }
+.syn-el:hover .syn-mirror, .syn-el:focus .syn-mirror,
+.syn-el:hover .syn-magnet, .syn-el:focus .syn-magnet { fill: var(--amber); }
 .syn-sample { fill: var(--bg-raise); }
 .syn-det { fill: var(--panel); }
 .syn-beam { stroke: var(--amber); stroke-width: 1.5; }

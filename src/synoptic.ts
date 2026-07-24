@@ -1,86 +1,115 @@
 // Synoptic beamline schematic styled as a scattering experiment:
-// beam enters from the left screen edge → 4-bounce mirror set → slit →
-// sample (irregular) → scattered rays → detector. Elements navigate to
-// site sections. An animated photon runs the beamline (unless the visitor
-// prefers reduced motion).
+// electron beam enters from the left edge → undulator (wiggle "generates" the
+// x-rays) → 4-bounce mirror periscope (up, across, down, right) → slit →
+// irregular sample → scattered rays → area detector. Elements navigate to site
+// sections. An animated photon runs the beamline (unless the visitor prefers
+// reduced motion). No labels — the symbolism speaks for itself.
 
 const W = 1200;
-const H = 116;
-const Y = 52; // beam axis
+const H = 58;
+const Y = 30; // beam axis
+const YU = 14; // periscope upper level
 
-// 4-bounce zigzag vertices (mirror positions)
-const ZIG: [number, number][] = [
-  [300, Y],
-  [330, Y - 18],
-  [360, Y],
-  [390, Y - 18],
-  [420, Y],
+// undulator span + wiggle
+const UND = { x0: 145, x1: 275 };
+const WIGGLE: [number, number][] = [
+  [150, Y],
+  [165, Y - 5], [180, Y + 5], [195, Y - 5], [210, Y + 5],
+  [225, Y - 5], [240, Y + 5], [255, Y - 5],
+  [270, Y],
 ];
-const SLIT_X = 590;
-const SAMPLE_X = 760;
-const DET_X = 1010;
 
-const BEAM_PATH = `M0,${Y} L${ZIG.map(([x, y]) => `${x},${y}`).join(' L')} L${SAMPLE_X},${Y}`;
+// periscope corners: up, across, down, right
+const M1: [number, number] = [500, Y];
+const M2: [number, number] = [500, YU];
+const M3: [number, number] = [560, YU];
+const M4: [number, number] = [560, Y];
+
+const SLIT_X = 670;
+const SAMPLE_X = 800;
+const DET_X = 1020;
+
+const BEAM_PATH =
+  `M0,${Y} L${WIGGLE.map(([x, y]) => `${x},${y}`).join(' L')} ` +
+  `L${M1.join(',')} L${M2.join(',')} L${M3.join(',')} L${M4.join(',')} L${SAMPLE_X},${Y}`;
 
 const SCATTER: { x2: number; y2: number }[] = [
-  { x2: DET_X, y2: Y - 34 },
-  { x2: DET_X, y2: Y - 14 },
-  { x2: DET_X, y2: Y + 16 },
-  { x2: DET_X, y2: Y + 36 },
+  { x2: DET_X, y2: 11 },
+  { x2: DET_X, y2: 21 },
+  { x2: DET_X, y2: 39 },
+  { x2: DET_X, y2: 49 },
 ];
+
+// parallel periscope mirrors: "/" pair turns right→up→right, "\" pair down→right
+function mirror(x: number, y: number, angle: number): string {
+  return `<rect class="syn-shape syn-mirror" x="${x - 9}" y="${y - 1.5}" width="18" height="3" transform="rotate(${angle} ${x} ${y})"/>`;
+}
+
+function undulatorMagnets(): string {
+  const parts: string[] = [];
+  for (let x = UND.x0; x < UND.x1; x += 20) {
+    parts.push(`<rect class="syn-shape syn-magnet" x="${x}" y="${Y - 14}" width="14" height="6"/>`);
+    parts.push(`<rect class="syn-shape syn-magnet" x="${x + 10}" y="${Y + 8}" width="14" height="6"/>`);
+  }
+  return parts.join('');
+}
 
 interface Element {
   label: string;
   target: string;
-  x: number;
+  cx: number;
+  halfWidth: number;
   shape: string;
-}
-
-function mirrorBar(x: number, y: number, up: boolean): string {
-  // small 45°-tilted bar behind each bounce vertex
-  const a = up ? -45 : 45;
-  return `<rect class="syn-shape syn-mirror" x="${x - 11}" y="${y + (up ? 3 : -7)}" width="22" height="4" transform="rotate(${a} ${x} ${y})"/>`;
 }
 
 function elements(): Element[] {
   return [
     {
-      label: 'SOURCE · ABOUT',
+      label: 'Undulator — about',
       target: '#about',
-      x: 110,
-      // upstream aperture flange the beam emerges through
-      shape: `<rect class="syn-shape" x="98" y="${Y - 16}" width="8" height="32"/><rect class="syn-shape" x="112" y="${Y - 12}" width="6" height="24"/>`,
+      cx: (UND.x0 + UND.x1) / 2,
+      halfWidth: 75,
+      shape: undulatorMagnets(),
     },
     {
-      label: 'M1–M4 · AGENT',
+      label: 'Mirrors — operator console',
       target: '#console',
-      x: 360,
+      cx: 530,
+      halfWidth: 45,
       shape:
-        mirrorBar(ZIG[1][0], ZIG[1][1], true) +
-        mirrorBar(ZIG[2][0], ZIG[2][1], false) +
-        mirrorBar(ZIG[3][0], ZIG[3][1], true) +
-        mirrorBar(ZIG[4][0], ZIG[4][1], false),
+        mirror(M1[0], M1[1], -45) +
+        mirror(M2[0], M2[1], -45) +
+        mirror(M3[0], M3[1], 45) +
+        mirror(M4[0], M4[1], 45),
     },
     {
-      label: 'SLIT · PROJECTS',
+      label: 'Slit — projects',
       target: '#projects',
-      x: SLIT_X,
+      cx: SLIT_X,
+      halfWidth: 30,
       shape:
-        `<rect class="syn-shape" x="${SLIT_X - 3}" y="${Y - 34}" width="6" height="27"/>` +
-        `<rect class="syn-shape" x="${SLIT_X - 3}" y="${Y + 7}" width="6" height="27"/>`,
+        `<rect class="syn-shape" x="${SLIT_X - 2.5}" y="${Y - 19}" width="5" height="15"/>` +
+        `<rect class="syn-shape" x="${SLIT_X - 2.5}" y="${Y + 4}" width="5" height="15"/>`,
     },
     {
-      label: 'SAMPLE · PAPERS',
+      label: 'Sample — publications',
       target: '#publications',
-      x: SAMPLE_X,
-      // irregular blob
-      shape: `<path class="syn-shape syn-sample" d="M${SAMPLE_X - 11},${Y - 3} C${SAMPLE_X - 13},${Y - 12} ${SAMPLE_X - 3},${Y - 16} ${SAMPLE_X + 4},${Y - 12} C${SAMPLE_X + 13},${Y - 9} ${SAMPLE_X + 12},${Y + 2} ${SAMPLE_X + 7},${Y + 8} C${SAMPLE_X + 2},${Y + 14} ${SAMPLE_X - 8},${Y + 11} ${SAMPLE_X - 11},${Y - 3} Z"/>`,
+      cx: SAMPLE_X,
+      halfWidth: 30,
+      // jagged, asymmetric lump
+      shape:
+        `<path class="syn-shape syn-sample" d="M${SAMPLE_X - 9},${Y + 1} ` +
+        `L${SAMPLE_X - 7},${Y - 5} L${SAMPLE_X - 2},${Y - 4} L${SAMPLE_X},${Y - 9} ` +
+        `L${SAMPLE_X + 4},${Y - 5} L${SAMPLE_X + 9},${Y - 6} L${SAMPLE_X + 8},${Y} ` +
+        `L${SAMPLE_X + 10},${Y + 4} L${SAMPLE_X + 3},${Y + 6} L${SAMPLE_X},${Y + 9} ` +
+        `L${SAMPLE_X - 5},${Y + 5} Z"/>`,
     },
     {
-      label: 'DETECTOR · CONTACT',
+      label: 'Detector — contact',
       target: '#contact',
-      x: DET_X + 10,
-      shape: `<rect class="syn-shape syn-det" x="${DET_X}" y="${Y - 44}" width="14" height="88"/>`,
+      cx: DET_X + 5,
+      halfWidth: 35,
+      shape: `<rect class="syn-shape syn-det" x="${DET_X}" y="8" width="10" height="42"/>`,
     },
   ];
 }
@@ -89,46 +118,41 @@ export function renderSynoptic(container: HTMLElement) {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const parts: string[] = [];
 
-  // static beam: entering ray + zigzag + to sample
   parts.push(`<path class="syn-beam-glow" d="${BEAM_PATH}" fill="none"/>`);
   parts.push(`<path class="syn-beam" d="${BEAM_PATH}" fill="none"/>`);
 
-  // weaker scattered rays: sample → detector face
   for (const s of SCATTER) {
     parts.push(`<line class="syn-scatter" x1="${SAMPLE_X}" y1="${Y}" x2="${s.x2}" y2="${s.y2}"/>`);
   }
-  // direct beam continues (attenuated) to detector center
   parts.push(`<line class="syn-scatter syn-direct" x1="${SAMPLE_X}" y1="${Y}" x2="${DET_X}" y2="${Y}"/>`);
 
-  // clickable elements
   for (const el of elements()) {
     parts.push(
       `<g class="syn-el" role="link" tabindex="0" data-target="${el.target}" aria-label="${el.label}">` +
-        `<rect class="syn-hit" x="${el.x - 45}" y="0" width="90" height="${H}" fill="transparent"/>` +
+        `<title>${el.label}</title>` +
+        `<rect class="syn-hit" x="${el.cx - el.halfWidth}" y="0" width="${el.halfWidth * 2}" height="${H}" fill="transparent"/>` +
         el.shape +
-        `<text x="${el.x}" y="${H - 8}" text-anchor="middle">${el.label}</text></g>`,
+        `</g>`,
     );
   }
 
-  // animated photon + scattered pulses (SMIL, synced by id chaining)
   if (!reduceMotion) {
     parts.push(
-      `<circle class="syn-photon" r="3.2">` +
+      `<circle class="syn-photon" r="2.5">` +
         `<animateMotion id="synMain" begin="0s;synScat3.end+0.7s" dur="2.2s" path="${BEAM_PATH}" fill="freeze"/>` +
         `<animate attributeName="opacity" values="1;1;0" keyTimes="0;0.98;1" begin="synMain.begin" dur="2.2s" fill="freeze"/>` +
         `</circle>`,
     );
     SCATTER.forEach((s, i) => {
       parts.push(
-        `<circle class="syn-photon syn-photon-weak" r="2" opacity="0">` +
+        `<circle class="syn-photon syn-photon-weak" r="1.6" opacity="0">` +
           `<animateMotion id="synScat${i}" begin="synMain.end" dur="0.55s" path="M${SAMPLE_X},${Y} L${s.x2},${s.y2}" fill="freeze"/>` +
           `<animate attributeName="opacity" values="0.7;0.7;0" keyTimes="0;0.9;1" begin="synMain.end" dur="0.55s" fill="freeze"/>` +
           `</circle>`,
       );
     });
-    // sample flash on photon arrival
     parts.push(
-      `<circle class="syn-flash" cx="${SAMPLE_X}" cy="${Y}" r="14" opacity="0">` +
+      `<circle class="syn-flash" cx="${SAMPLE_X}" cy="${Y}" r="11" opacity="0">` +
         `<animate attributeName="opacity" values="0.5;0" begin="synMain.end" dur="0.5s" fill="freeze"/>` +
         `</circle>`,
     );
