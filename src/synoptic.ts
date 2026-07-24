@@ -10,23 +10,26 @@ const H = 72;
 const Y = 30; // beam axis
 const YU = 14; // periscope upper level
 
+// element centers spaced evenly across the strip:
+// undulator 180 · periscope 425 · slit 650 · sample 865 · detector 1080
+
 // undulator span + wiggle
-const UND = { x0: 165, x1: 245 };
+const UND = { x0: 140, x1: 220 };
 const WIGGLE: [number, number][] = [
-  [168, Y],
-  [178, Y - 4], [190, Y + 4], [202, Y - 4], [214, Y + 4], [226, Y - 4],
-  [240, Y],
+  [143, Y],
+  [153, Y - 4], [165, Y + 4], [177, Y - 4], [189, Y + 4], [201, Y - 4],
+  [215, Y],
 ];
 
 // periscope corners: up, across, down, right (compact)
-const M1: [number, number] = [505, Y];
-const M2: [number, number] = [505, YU];
-const M3: [number, number] = [541, YU];
-const M4: [number, number] = [541, Y];
+const M1: [number, number] = [407, Y];
+const M2: [number, number] = [407, YU];
+const M3: [number, number] = [443, YU];
+const M4: [number, number] = [443, Y];
 
-const SLIT_X = 670;
-const SAMPLE_X = 800;
-const DET_X = 1020;
+const SLIT_X = 650;
+const SAMPLE_X = 865;
+const DET_X = 1075;
 
 const BEAM_PATH =
   `M0,${Y} L${WIGGLE.map(([x, y]) => `${x},${y}`).join(' L')} ` +
@@ -73,7 +76,7 @@ function elements(): Element[] {
     {
       label: 'CONSOLE',
       target: '#console',
-      cx: 523,
+      cx: 425,
       halfWidth: 40,
       shape:
         mirror(M1[0], M1[1], -45) +
