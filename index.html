@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ron Pandolfi — Beamline Controls, ALS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- top status bar -->
+    <header class="statusbar" id="topbar">
+      <span class="statusbar-title">RPANDOLFI // OPS</span>
+      <span class="statusbar-item mono" id="clock" aria-hidden="true"></span>
+      <span class="statusbar-spacer"></span>
+      <span class="statusbar-item"><span class="led led-green" aria-hidden="true"></span>SITE: OPERATIONAL</span>
+      <button class="statusbar-btn" id="theme-toggle" aria-label="Toggle color theme">THEME</button>
+    </header>
+
+    <!-- synoptic nav -->
+    <nav class="synoptic" aria-label="Site sections as beamline schematic">
+      <div class="synoptic-inner" id="synoptic"></div>
+      <div class="synoptic-caption mono">SYNOPTIC — select an element to navigate</div>
+    </nav>
+
+    <main>
+      <!-- hero -->
+      <section class="hero" id="about">
+        <div class="hero-text">
+          <p class="eyebrow mono">LAWRENCE BERKELEY NATIONAL LABORATORY · ADVANCED LIGHT SOURCE</p>
+          <h1>Ron Pandolfi</h1>
+          <p class="lede">
+            I build the control systems and user interfaces that run synchrotron beamlines —
+            from EPICS IOCs and configuration management to Lightfall, a unified control
+            dashboard for the ALS.
+          </p>
+        </div>
+        <div class="panel hero-beam">
+          <div class="panel-head">
+            <span class="panel-title">ALS BEAM CURRENT — TODAY</span>
+            <span class="tag tag-live">LIVE</span>
+          </div>
+          <img id="beamplot" alt="ALS storage ring beam current, today" loading="lazy" />
+          <div class="readout-row" id="readouts">
+            <div class="readout"><span class="readout-label">RING CURRENT</span><span class="readout-value mono" id="ro-current">—</span><span class="tag tag-sim">SIM</span></div>
+            <div class="readout"><span class="readout-label">LIFETIME</span><span class="readout-value mono" id="ro-lifetime">—</span><span class="tag tag-sim">SIM</span></div>
+            <div class="readout"><span class="readout-label">ENERGY</span><span class="readout-value mono">1.90 GeV</span></div>
+          </div>
+          <p class="footnote">Plot: real, from ALS operations archive. Numeric readouts: simulated.</p>
+        </div>
+      </section>
+
+      <!-- agent console -->
+      <section class="section" id="console">
+        <div class="section-head">
+          <h2>Operator console</h2>
+          <p class="section-sub">
+            A small language model that runs entirely in your browser on WebGPU — no server,
+            nothing leaves your machine. It knows my projects; ask it how to get started with
+            gpCAM or what Lightfall is.
+          </p>
+        </div>
+        <div class="panel console-panel">
+          <div class="panel-head">
+            <span class="panel-title">AGENT — LOCAL LLM</span>
+            <span class="tag" id="agent-status">OFFLINE</span>
+          </div>
+          <div class="console-log mono" id="console-log">
+            <div class="log-line log-dim">agent offline. boot to load model (~1 GB, cached after first run).</div>
+          </div>
+          <form class="console-input-row" id="console-form">
+            <button type="button" class="btn btn-primary" id="boot-btn">BOOT AGENT</button>
+            <input class="console-input mono" id="console-input" type="text" placeholder="ask about my work…" disabled autocomplete="off" />
+            <button type="submit" class="btn" id="send-btn" disabled>SEND</button>
+          </form>
+          <p class="footnote">Small local model — answers may be imperfect. Requires WebGPU.</p>
+        </div>
+      </section>
+
+      <!-- projects -->
+      <section class="section" id="projects">
+        <div class="section-head">
+          <h2>Software &amp; projects</h2>
+        </div>
+        <div class="card-grid">
+          <article class="panel card">
+            <div class="panel-head"><span class="panel-title">LIGHTFALL</span><span class="tag tag-live">ACTIVE</span></div>
+            <p>A unified control dashboard for ALS beamlines. Plugin architecture, live plotting, and a consistent operator experience across endstations.</p>
+            <p class="card-meta mono">Python · Qt · EPICS · Bluesky</p>
+          </article>
+          <article class="panel card">
+            <div class="panel-head"><span class="panel-title">CSM</span><span class="tag tag-live">ACTIVE</span></div>
+            <p>Configuration management for the Beamline Control System: declarative device configs that generate EPICS IOCs through a plugin ecosystem.</p>
+            <p class="card-meta mono">Python · EPICS · GitLab CI</p>
+          </article>
+          <article class="panel card">
+            <div class="panel-head"><span class="panel-title">TSUCHINOKO</span></div>
+            <p>Desktop application for adaptive, autonomous experiments driven by gpCAM — steering measurements toward where the information is.</p>
+            <p class="card-meta mono">Python · Qt · gpCAM</p>
+          </article>
+          <article class="panel card">
+            <div class="panel-head"><span class="panel-title">XI-CAM</span></div>
+            <p>Extensible platform for synchrotron data analysis and visualization, used across multiple beamlines and techniques.</p>
+            <p class="card-meta mono">Python · Qt</p>
+          </article>
+          <article class="panel card">
+            <div class="panel-head"><span class="panel-title">BCSOPHYD-ZMQ</span></div>
+            <p>Bridge between the LabVIEW-based Beamline Control System and the Bluesky experiment orchestration stack, over ZeroMQ.</p>
+            <p class="card-meta mono">Python · LabVIEW · ZMQ</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- publications -->
+      <section class="section" id="publications">
+        <div class="section-head">
+          <h2>Publications &amp; talks</h2>
+          <p class="section-sub">Selected. Full list on ORCID / Google Scholar.</p>
+        </div>
+        <ul class="pub-list">
+          <li class="pub">
+            <span class="pub-year mono">2026</span>
+            <span class="pub-body"><strong>Lightfall: a unified control dashboard for synchrotron beamlines.</strong> Manuscript in preparation.</span>
+          </li>
+          <li class="pub">
+            <span class="pub-year mono">—</span>
+            <span class="pub-body"><em>Placeholder — selected papers and invited talks go here.</em></span>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <!-- footer status bar -->
+    <footer class="statusbar statusbar-footer" id="contact">
+      <span class="statusbar-item mono">CONTACT:</span>
+      <a class="statusbar-link" href="mailto:ronpandolfi@lbl.gov">EMAIL</a>
+      <a class="statusbar-link" href="https://github.com/ronpandolfi" rel="me">GITHUB</a>
+      <a class="statusbar-link" href="https://orcid.org/" rel="me">ORCID</a>
+      <a class="statusbar-link" href="https://www.linkedin.com/" rel="me">LINKEDIN</a>
+      <span class="statusbar-spacer"></span>
+      <span class="statusbar-item">No trackers. Agent runs locally.</span>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
