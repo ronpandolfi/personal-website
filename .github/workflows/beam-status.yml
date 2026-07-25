@@ -1,0 +1,43 @@
+name: Update beam status data
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: beam-status
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch ALS beam status
+        run: |
+          curl -sf --max-time 20 'https://controls.als.lbl.gov/als-beamstatus/curvals' -o curvals.json
+          jq 'map({(.label): .}) | add | {
+                current_mA: (."Beam Current".val | tonumber),
+                lifetime_h: (.Lifetime.val | tonumber),
+                energy_gev: (."Beam Energy".val | tonumber),
+                comment: .Comment.val,
+                source_tstamp: (."Beam Current".tstamp | tonumber),
+                fetched: (now | floor)
+              }' curvals.json > beam.json
+          cat beam.json
+
+      - name: Push to data branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir out && cp beam.json out/
+          cd out
+          git init -q -b data
+          git config user.name 'beam-status-bot'
+          git config user.email 'actions@github.com'
+          git add beam.json
+          git commit -q -m "beam status $(date -u +%FT%TZ)"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" data
