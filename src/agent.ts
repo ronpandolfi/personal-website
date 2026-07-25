@@ -1,7 +1,9 @@
 // Local LLM operator console via WebLLM (WebGPU). Opt-in; nothing loads until boot.
-import { SYSTEM_PROMPT } from './persona';
+// Grounding strategy: strict answer-from-notes rules plus per-question retrieval
+// of relevant knowledge chunks (see knowledge.ts) to curb hallucination.
+import { buildSystemPrompt } from './knowledge';
 
-const MODEL = 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC';
+const MODEL = 'Qwen2.5-3B-Instruct-q4f16_1-MLC';
 
 type LogKind = 'dim' | 'user' | 'agent' | 'sys' | 'err';
 
@@ -37,7 +39,7 @@ export function setupAgentConsole() {
     }
 
     addLine('## boot sequence initiated', 'sys');
-    addLine(`## loading ${MODEL} — first run downloads ~1 GB, then cached`, 'sys');
+    addLine(`## loading ${MODEL} — first run downloads ~2 GB, then cached`, 'sys');
     const progress = addLine('## …', 'dim');
 
     try {
@@ -79,9 +81,9 @@ export function setupAgentConsole() {
 
     try {
       const chunks = await engine.chat.completions.create({
-        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...history.slice(-8)],
+        messages: [{ role: 'system', content: buildSystemPrompt(q) }, ...history.slice(-6)],
         stream: true,
-        temperature: 0.3,
+        temperature: 0,
         max_tokens: 400,
       });
       let reply = '';
