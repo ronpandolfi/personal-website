@@ -112,6 +112,7 @@ a { color: var(--cyan); }
 .syn-photon { fill: var(--amber); filter: drop-shadow(0 0 4px var(--amber)); }
 .syn-photon-weak { filter: drop-shadow(0 0 2px var(--amber)); }
 .syn-flash { fill: var(--amber); }
+.syn-det-flash { fill: #ffd75e; }
 
 /* ---------- layout ---------- */
 main { max-width: 980px; margin: 0 auto; padding: 0 1.25rem; }

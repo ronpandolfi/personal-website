@@ -178,6 +178,14 @@ export function renderSynoptic(container: HTMLElement) {
         `<animate attributeName="opacity" values="0.5;0" begin="synMain.end" dur="0.5s" fill="freeze"/>` +
         `</circle>`,
     );
+    // detector registers the hit: sudden gold flash, eased fade
+    parts.push(
+      `<defs><filter id="detGlow" x="-150%" y="-50%" width="400%" height="200%">` +
+        `<feGaussianBlur stdDeviation="5"/></filter></defs>` +
+        `<rect class="syn-det-flash" x="${DET_X - 3}" y="5" width="16" height="48" opacity="0" filter="url(#detGlow)" pointer-events="none">` +
+        `<animate attributeName="opacity" values="0.9;0" keyTimes="0;1" calcMode="spline" keySplines="0.2 0 0.45 1" begin="synScat0.end" dur="0.8s" fill="freeze"/>` +
+        `</rect>`,
+    );
   }
 
   // tail: continues the feed line from the left screen edge to the schematic.
