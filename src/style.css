@@ -9,6 +9,7 @@
   --cyan: #5fd7e8;
   --green: #7dd88f;
   --red: #ff6b5e;
+  --violet: #b48cf2;
 }
 :root[data-theme='light'] {
   --bg: #eef1f6;
@@ -21,6 +22,7 @@
   --cyan: #0e7c94;
   --green: #1f8a3d;
   --red: #c03d31;
+  --violet: #6d3fb8;
 }
 
 * { box-sizing: border-box; margin: 0; }
@@ -53,12 +55,10 @@ a { color: var(--cyan); }
   font-family: 'IBM Plex Mono', ui-monospace, monospace;
   font-size: 0.72rem;
   letter-spacing: 0.06em;
-  position: sticky;
-  top: 0;
-  z-index: 10;
 }
+.site-head { position: sticky; top: 0; z-index: 10; }
 .statusbar-footer { position: static; border-top: 1px solid var(--line); border-bottom: none; margin-top: 4rem; }
-.statusbar-title { font-weight: 600; color: var(--amber); }
+.statusbar-title { font-weight: 600; color: var(--amber); text-shadow: 0 0 10px color-mix(in srgb, var(--amber) 55%, transparent); }
 .statusbar-spacer { flex: 1; }
 .statusbar-item { color: var(--dim); display: inline-flex; align-items: center; gap: 0.4rem; }
 .statusbar-link { color: var(--cyan); text-decoration: none; }
@@ -80,6 +80,8 @@ a { color: var(--cyan); }
 .synoptic-inner svg { width: min(100%, 1250px); height: auto; display: block; margin: 0 auto; }
 @media (min-width: 1251px) {
   /* beam axis: padding-top + 1250px * (30/1200) = 31.25px into the svg */
+  /* tail core + glow, matched to the in-svg feed line (3px core, wide soft glow,
+     same 3.1s irregular breathing values as the SMIL animation) */
   .synoptic::before {
     content: '';
     position: absolute;
@@ -88,17 +90,35 @@ a { color: var(--cyan); }
     width: calc(50% - 625px);
     height: 3px;
     background: var(--amber);
-    box-shadow: 0 0 8px var(--amber);
-    animation: feed-breathe 3.1s infinite;
+    animation: feed-core 3.1s infinite;
+  }
+  .synoptic::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: calc(0.35rem + 25.75px);
+    width: calc(50% - 625px);
+    height: 11px;
+    background: var(--amber);
+    filter: blur(4px);
+    animation: feed-glow 3.1s infinite;
   }
 }
-@keyframes feed-breathe {
-  0% { opacity: 0.6; }
-  18% { opacity: 0.95; }
-  35% { opacity: 0.7; }
-  55% { opacity: 1; }
-  75% { opacity: 0.75; }
-  100% { opacity: 0.6; }
+@keyframes feed-core {
+  0% { transform: scaleY(1); }
+  18% { transform: scaleY(1.2); }
+  35% { transform: scaleY(1.03); }
+  55% { transform: scaleY(1.27); }
+  75% { transform: scaleY(1.1); }
+  100% { transform: scaleY(1); }
+}
+@keyframes feed-glow {
+  0% { opacity: 0.18; }
+  18% { opacity: 0.42; }
+  35% { opacity: 0.24; }
+  55% { opacity: 0.5; }
+  75% { opacity: 0.3; }
+  100% { opacity: 0.18; }
 }
 .syn-el { cursor: pointer; }
 .syn-el .syn-shape { fill: var(--panel); stroke: var(--dim); stroke-width: 1.5; transition: stroke 0.15s, fill 0.15s; }
@@ -129,14 +149,17 @@ main { max-width: 980px; margin: 0 auto; padding: 0 1.25rem; }
   border: 1px solid var(--amber); padding: 0.45rem 0.8rem;
   font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.08em; color: var(--amber);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--amber) 22%, transparent);
 }
 .award-mark { font-size: 0.6rem; }
 .award-sub { color: var(--dim); font-weight: 400; font-size: 0.65rem; letter-spacing: 0.05em; }
-.statusbar-value { color: var(--amber); margin: 0 0.45rem 0 0.2rem; }
+.statusbar-value { color: var(--amber); margin: 0 0.45rem 0 0.2rem; text-shadow: 0 0 8px color-mix(in srgb, var(--amber) 45%, transparent); }
 .eyebrow { font-size: 0.68rem; letter-spacing: 0.12em; color: var(--amber); margin-bottom: 0.9rem; }
 h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 1rem; }
 .lede { color: var(--dim); font-size: 1.05rem; max-width: 34rem; }
 
+/* keep section tops clear of the sticky header when navigating */
+.section, .hero { scroll-margin-top: 135px; }
 .section { padding: 3rem 0 0; }
 .section-head { margin-bottom: 1.25rem; }
 h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
@@ -153,9 +176,10 @@ h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
   font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em;
   padding: 0.1rem 0.45rem; border: 1px solid var(--line); color: var(--dim);
 }
-.tag-live { color: var(--green); border-color: var(--green); }
-.tag-sim { color: var(--amber); border-color: var(--amber); }
-.tag-err { color: var(--red); border-color: var(--red); }
+.tag-live { color: var(--green); border-color: var(--green); box-shadow: 0 0 8px color-mix(in srgb, var(--green) 35%, transparent); }
+.tag-sim { color: var(--amber); border-color: var(--amber); box-shadow: 0 0 8px color-mix(in srgb, var(--amber) 30%, transparent); }
+.tag-err { color: var(--red); border-color: var(--red); box-shadow: 0 0 8px color-mix(in srgb, var(--red) 35%, transparent); }
+.tag-talk { color: var(--violet); border-color: var(--violet); }
 
 .footnote { font-size: 0.72rem; color: var(--dim); padding: 0.5rem 0.9rem 0.7rem; }
 
@@ -208,13 +232,17 @@ h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
 
 /* ---------- cards / pubs ---------- */
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-.card p { padding: 0.8rem 0.9rem 0; font-size: 0.9rem; color: var(--text); flex: 1; }
 .card { display: flex; flex-direction: column; }
+.card p { padding: 0.8rem 0.9rem 0; font-size: 0.9rem; color: var(--text); }
+.card p:first-of-type { flex: 1; }
+.card-meta { margin-top: auto; }
 .card-meta { padding: 0.5rem 0.9rem 0.9rem !important; font-size: 0.68rem !important; color: var(--dim) !important; letter-spacing: 0.05em; }
 
 .panel-tags { display: inline-flex; gap: 0.4rem; }
 .tag-link { color: var(--cyan); border-color: var(--cyan); text-decoration: none; }
-.tag-link:hover, .tag-link:focus-visible { background: var(--cyan); color: var(--bg); }
+.tag-link:hover, .tag-link:focus-visible { background: var(--cyan); color: var(--bg); box-shadow: 0 0 10px color-mix(in srgb, var(--cyan) 60%, transparent); }
+.tag-docs { color: var(--violet); border-color: var(--violet); text-decoration: none; }
+.tag-docs:hover, .tag-docs:focus-visible { background: var(--violet); color: var(--bg); box-shadow: 0 0 10px color-mix(in srgb, var(--violet) 60%, transparent); }
 
 /* ---------- contact badges ---------- */
 .contact-grid { display: flex; flex-wrap: wrap; gap: 1rem; }
