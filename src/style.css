@@ -74,8 +74,23 @@ a { color: var(--cyan); }
 /* ---------- synoptic ---------- */
 /* full-bleed: the beam extends in from the left screen edge */
 .synoptic { background: var(--bg-raise); border-bottom: 1px solid var(--line); padding: 0.35rem 0 0.15rem; }
-/* capped width, anchored left so the beam still bleeds in from the edge */
-.synoptic-inner svg { width: min(100%, 1250px); height: auto; display: block; margin-right: auto; }
+/* schematic centered; on wide screens a CSS tail extends the incoming beam
+   from the left screen edge to the svg boundary */
+.synoptic { position: relative; overflow: hidden; }
+.synoptic-inner svg { width: min(100%, 1250px); height: auto; display: block; margin: 0 auto; }
+@media (min-width: 1251px) {
+  /* beam axis: padding-top + 1250px * (30/1200) = 31.25px into the svg */
+  .synoptic::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: calc(0.35rem + 30.5px);
+    width: calc(50% - 625px);
+    height: 1.5px;
+    background: var(--amber);
+    box-shadow: 0 0 5px var(--amber);
+  }
+}
 .syn-el { cursor: pointer; }
 .syn-el .syn-shape { fill: var(--panel); stroke: var(--dim); stroke-width: 1.5; transition: stroke 0.15s, fill 0.15s; }
 .syn-el text { fill: var(--dim); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; }
@@ -207,6 +222,19 @@ h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
 .contact-text { display: flex; flex-direction: column; gap: 0.1rem; }
 .contact-label { font-size: 0.6rem; letter-spacing: 0.1em; color: var(--dim); }
 .contact-value { color: var(--text); font-size: 0.85rem; }
+
+/* ---------- role list ---------- */
+.role-list { margin: 0; }
+.role-item {
+  display: grid; grid-template-columns: 230px 1fr; gap: 1.5rem;
+  padding: 1rem 0; border-bottom: 1px solid var(--line);
+}
+.role-item:first-child { border-top: 1px solid var(--line); }
+.role-item dt { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; color: var(--amber); padding-top: 0.2rem; }
+.role-item dd { margin: 0; color: var(--text); max-width: 44rem; }
+@media (max-width: 760px) {
+  .role-item { grid-template-columns: 1fr; gap: 0.4rem; }
+}
 
 .pub-list { list-style: none; padding: 0; }
 .pub { display: flex; gap: 1.25rem; padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
