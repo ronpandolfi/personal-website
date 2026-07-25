@@ -3,8 +3,6 @@
 // of relevant knowledge chunks (see knowledge.ts) to curb hallucination.
 import { buildSystemPrompt } from './knowledge';
 
-const MODEL = 'Qwen2.5-3B-Instruct-q4f16_1-MLC';
-
 type LogKind = 'dim' | 'user' | 'agent' | 'sys' | 'err';
 
 export function setupAgentConsole() {
@@ -14,6 +12,12 @@ export function setupAgentConsole() {
   const sendBtn = document.getElementById('send-btn') as HTMLButtonElement;
   const bootBtn = document.getElementById('boot-btn') as HTMLButtonElement;
   const status = document.getElementById('agent-status')!;
+  const modelSelect = document.getElementById('model-select') as HTMLSelectElement;
+
+  const savedModel = localStorage.getItem('agent-model');
+  if (savedModel && [...modelSelect.options].some((o) => o.value === savedModel)) {
+    modelSelect.value = savedModel;
+  }
 
   const addLine = (text: string, kind: LogKind): HTMLElement => {
     const div = document.createElement('div');
@@ -28,7 +32,10 @@ export function setupAgentConsole() {
   const history: { role: 'user' | 'assistant'; content: string }[] = [];
 
   bootBtn.addEventListener('click', async () => {
+    const MODEL = modelSelect.value;
+    localStorage.setItem('agent-model', MODEL);
     bootBtn.disabled = true;
+    modelSelect.disabled = true;
     status.textContent = 'BOOTING';
 
     if (!('gpu' in navigator)) {
@@ -39,7 +46,7 @@ export function setupAgentConsole() {
     }
 
     addLine('## boot sequence initiated', 'sys');
-    addLine(`## loading ${MODEL} — first run downloads ~2 GB, then cached`, 'sys');
+    addLine(`## loading ${MODEL} — first run downloads the model, then cached`, 'sys');
     const progress = addLine('## …', 'dim');
 
     try {
@@ -55,6 +62,7 @@ export function setupAgentConsole() {
       status.textContent = 'FAULT';
       status.classList.add('tag-err');
       bootBtn.disabled = false;
+      modelSelect.disabled = false;
       return;
     }
 
