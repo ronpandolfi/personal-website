@@ -35,6 +35,11 @@ const BEAM_PATH =
   `M0,${Y} L${WIGGLE.map(([x, y]) => `${x},${y}`).join(' L')} ` +
   `L${M1.join(',')} L${M2.join(',')} L${M3.join(',')} L${M4.join(',')} L${SAMPLE_X},${Y}`;
 
+// the photon is born in the undulator; its animation starts there
+const ANIM_PATH =
+  `M${WIGGLE.map(([x, y]) => `${x},${y}`).join(' L')} ` +
+  `L${M1.join(',')} L${M2.join(',')} L${M3.join(',')} L${M4.join(',')} L${SAMPLE_X},${Y}`;
+
 const SCATTER: { x2: number; y2: number }[] = [
   { x2: DET_X, y2: 11 },
   { x2: DET_X, y2: 21 },
@@ -123,6 +128,21 @@ export function renderSynoptic(container: HTMLElement) {
   parts.push(`<path class="syn-beam-glow" d="${BEAM_PATH}" fill="none"/>`);
   parts.push(`<path class="syn-beam" d="${BEAM_PATH}" fill="none"/>`);
 
+  // upstream feed: thicker, breathing with a little instability and a lot of power
+  const feedAnim = reduceMotion
+    ? ''
+    : `<animate attributeName="opacity" values="0.18;0.42;0.24;0.5;0.3;0.44;0.18" dur="3.1s" repeatCount="indefinite"/>`;
+  parts.push(
+    `<line class="syn-feed-glow" x1="0" y1="${Y}" x2="${WIGGLE[0][0]}" y2="${Y}" opacity="0.3">${feedAnim}</line>`,
+  );
+  parts.push(
+    `<line class="syn-feed" x1="0" y1="${Y}" x2="${WIGGLE[0][0]}" y2="${Y}">${
+      reduceMotion
+        ? ''
+        : `<animate attributeName="stroke-width" values="3;3.6;3.1;3.8;3.3;3" dur="3.1s" repeatCount="indefinite"/>`
+    }</line>`,
+  );
+
   for (const s of SCATTER) {
     parts.push(`<line class="syn-scatter" x1="${SAMPLE_X}" y1="${Y}" x2="${s.x2}" y2="${s.y2}"/>`);
   }
@@ -141,8 +161,8 @@ export function renderSynoptic(container: HTMLElement) {
   if (!reduceMotion) {
     parts.push(
       `<circle class="syn-photon" r="2.5">` +
-        `<animateMotion id="synMain" begin="0s;synScat3.end+0.7s" dur="2.2s" path="${BEAM_PATH}" fill="freeze"/>` +
-        `<animate attributeName="opacity" values="1;1;0" keyTimes="0;0.98;1" begin="synMain.begin" dur="2.2s" fill="freeze"/>` +
+        `<animateMotion id="synMain" begin="0s;synScat3.end+0.7s" dur="2s" path="${ANIM_PATH}" fill="freeze"/>` +
+        `<animate attributeName="opacity" values="1;1;0" keyTimes="0;0.98;1" begin="synMain.begin" dur="2s" fill="freeze"/>` +
         `</circle>`,
     );
     SCATTER.forEach((s, i) => {

@@ -84,12 +84,21 @@ a { color: var(--cyan); }
     content: '';
     position: absolute;
     left: 0;
-    top: calc(0.35rem + 30.5px);
+    top: calc(0.35rem + 29.75px);
     width: calc(50% - 625px);
-    height: 1.5px;
+    height: 3px;
     background: var(--amber);
-    box-shadow: 0 0 5px var(--amber);
+    box-shadow: 0 0 8px var(--amber);
+    animation: feed-breathe 3.1s infinite;
   }
+}
+@keyframes feed-breathe {
+  0% { opacity: 0.6; }
+  18% { opacity: 0.95; }
+  35% { opacity: 0.7; }
+  55% { opacity: 1; }
+  75% { opacity: 0.75; }
+  100% { opacity: 0.6; }
 }
 .syn-el { cursor: pointer; }
 .syn-el .syn-shape { fill: var(--panel); stroke: var(--dim); stroke-width: 1.5; transition: stroke 0.15s, fill 0.15s; }
@@ -103,6 +112,8 @@ a { color: var(--cyan); }
 .syn-det { fill: var(--panel); }
 .syn-beam { stroke: var(--amber); stroke-width: 1.5; }
 .syn-beam-glow { stroke: var(--amber); stroke-width: 6; opacity: 0.15; }
+.syn-feed { stroke: var(--amber); stroke-width: 3; }
+.syn-feed-glow { stroke: var(--amber); stroke-width: 10; }
 .syn-scatter { stroke: var(--amber); stroke-width: 1; opacity: 0.25; stroke-dasharray: 3 4; }
 .syn-direct { opacity: 0.4; stroke-dasharray: none; }
 .syn-photon { fill: var(--amber); filter: drop-shadow(0 0 4px var(--amber)); }
@@ -197,12 +208,13 @@ h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
 
 /* ---------- cards / pubs ---------- */
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-.card p { padding: 0.8rem 0.9rem 0; font-size: 0.9rem; color: var(--text); }
+.card p { padding: 0.8rem 0.9rem 0; font-size: 0.9rem; color: var(--text); flex: 1; }
+.card { display: flex; flex-direction: column; }
 .card-meta { padding: 0.5rem 0.9rem 0.9rem !important; font-size: 0.68rem !important; color: var(--dim) !important; letter-spacing: 0.05em; }
 
-.card-links { display: flex; gap: 1rem; padding: 0 0.9rem 0.9rem; margin-top: -0.35rem; }
-.card-links a { font-size: 0.68rem; letter-spacing: 0.08em; color: var(--cyan); text-decoration: none; }
-.card-links a:hover, .card-links a:focus-visible { text-decoration: underline; }
+.panel-tags { display: inline-flex; gap: 0.4rem; }
+.tag-link { color: var(--cyan); border-color: var(--cyan); text-decoration: none; }
+.tag-link:hover, .tag-link:focus-visible { background: var(--cyan); color: var(--bg); }
 
 /* ---------- contact badges ---------- */
 .contact-grid { display: flex; flex-wrap: wrap; gap: 1rem; }
