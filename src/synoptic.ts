@@ -133,10 +133,10 @@ export function renderSynoptic(container: HTMLElement) {
     ? ''
     : `<animate attributeName="opacity" values="0.18;0.42;0.24;0.5;0.3;0.44;0.18" dur="3.1s" repeatCount="indefinite"/>`;
   parts.push(
-    `<line class="syn-feed-glow" x1="0" y1="${Y}" x2="${WIGGLE[0][0]}" y2="${Y}" opacity="0.3">${feedAnim}</line>`,
+    `<line class="syn-feed-glow" x1="0" y1="${Y}" x2="${WIGGLE[0][0]}" y2="${Y}" stroke-width="10" opacity="0.3">${feedAnim}</line>`,
   );
   parts.push(
-    `<line class="syn-feed" x1="0" y1="${Y}" x2="${WIGGLE[0][0]}" y2="${Y}">${
+    `<line class="syn-feed" x1="0" y1="${Y}" x2="${WIGGLE[0][0]}" y2="${Y}" stroke-width="3">${
       reduceMotion
         ? ''
         : `<animate attributeName="stroke-width" values="3;3.6;3.1;3.8;3.3;3" dur="3.1s" repeatCount="indefinite"/>`
@@ -180,7 +180,28 @@ export function renderSynoptic(container: HTMLElement) {
     );
   }
 
-  container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">${parts.join('')}</svg>`;
+  // tail: continues the feed line from the left screen edge to the schematic.
+  // Same stroke widths/animations as the in-svg feed, pre-scaled by the
+  // schematic's render scale (1250px / 1200 units) so they match on screen.
+  const S = 1250 / W;
+  const tailCoreAnim = reduceMotion
+    ? ''
+    : `<animate attributeName="stroke-width" values="${[3, 3.6, 3.1, 3.8, 3.3, 3]
+        .map((v) => (v * S).toFixed(2))
+        .join(';')}" dur="3.1s" repeatCount="indefinite"/>`;
+  const tailGlowAnim = reduceMotion
+    ? ''
+    : `<animate attributeName="opacity" values="0.18;0.42;0.24;0.5;0.3;0.44;0.18" dur="3.1s" repeatCount="indefinite"/>`;
+  const tail =
+    `<div class="synoptic-tail" aria-hidden="true">` +
+    `<svg viewBox="0 0 100 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">` +
+    `<line class="syn-feed-glow" x1="0" y1="20" x2="100" y2="20" stroke-width="${(10 * S).toFixed(2)}" opacity="0.3" vector-effect="non-scaling-stroke">${tailGlowAnim}</line>` +
+    `<line class="syn-feed" x1="0" y1="20" x2="100" y2="20" stroke-width="${(3 * S).toFixed(2)}" vector-effect="non-scaling-stroke">${tailCoreAnim}</line>` +
+    `</svg></div>`;
+
+  container.innerHTML =
+    tail +
+    `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">${parts.join('')}</svg>`;
 
   container.querySelectorAll<SVGGElement>('.syn-el').forEach((g) => {
     const go = () => {

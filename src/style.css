@@ -80,45 +80,7 @@ a { color: var(--cyan); }
 .synoptic-inner svg { width: min(100%, 1250px); height: auto; display: block; margin: 0 auto; }
 @media (min-width: 1251px) {
   /* beam axis: padding-top + 1250px * (30/1200) = 31.25px into the svg */
-  /* tail core + glow, matched to the in-svg feed line (3px core, wide soft glow,
-     same 3.1s irregular breathing values as the SMIL animation) */
-  .synoptic::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: calc(0.35rem + 29.75px);
-    width: calc(50% - 625px);
-    height: 3px;
-    background: var(--amber);
-    animation: feed-core 3.1s infinite;
-  }
-  .synoptic::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: calc(0.35rem + 25.75px);
-    width: calc(50% - 625px);
-    height: 11px;
-    background: var(--amber);
-    filter: blur(4px);
-    animation: feed-glow 3.1s infinite;
-  }
-}
-@keyframes feed-core {
-  0% { transform: scaleY(1); }
-  18% { transform: scaleY(1.2); }
-  35% { transform: scaleY(1.03); }
-  55% { transform: scaleY(1.27); }
-  75% { transform: scaleY(1.1); }
-  100% { transform: scaleY(1); }
-}
-@keyframes feed-glow {
-  0% { opacity: 0.18; }
-  18% { opacity: 0.42; }
-  35% { opacity: 0.24; }
-  55% { opacity: 0.5; }
-  75% { opacity: 0.3; }
-  100% { opacity: 0.18; }
+  .synoptic-tail { display: block; }
 }
 .syn-el { cursor: pointer; }
 .syn-el .syn-shape { fill: var(--panel); stroke: var(--dim); stroke-width: 1.5; transition: stroke 0.15s, fill 0.15s; }
@@ -132,8 +94,19 @@ a { color: var(--cyan); }
 .syn-det { fill: var(--panel); }
 .syn-beam { stroke: var(--amber); stroke-width: 1.5; }
 .syn-beam-glow { stroke: var(--amber); stroke-width: 6; opacity: 0.15; }
-.syn-feed { stroke: var(--amber); stroke-width: 3; }
-.syn-feed-glow { stroke: var(--amber); stroke-width: 10; }
+/* stroke widths set via attributes so SMIL width animation isn't overridden */
+.syn-feed { stroke: var(--amber); }
+.syn-feed-glow { stroke: var(--amber); }
+.synoptic-tail {
+  position: absolute;
+  left: 0;
+  top: calc(0.35rem + 31.25px - 20px);
+  width: calc(50% - 625px);
+  height: 40px;
+  pointer-events: none;
+  display: none;
+}
+.synoptic-tail svg { width: 100%; height: 100%; display: block; }
 .syn-scatter { stroke: var(--amber); stroke-width: 1; opacity: 0.25; stroke-dasharray: 3 4; }
 .syn-direct { opacity: 0.4; stroke-dasharray: none; }
 .syn-photon { fill: var(--amber); filter: drop-shadow(0 0 4px var(--amber)); }
