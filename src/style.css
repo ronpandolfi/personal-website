@@ -78,10 +78,6 @@ a { color: var(--cyan); }
    from the left screen edge to the svg boundary */
 .synoptic { position: relative; overflow: hidden; }
 .synoptic-inner svg { width: min(100%, 1250px); height: auto; display: block; margin: 0 auto; }
-@media (min-width: 1251px) {
-  /* beam axis: padding-top + 1250px * (30/1200) = 31.25px into the svg */
-  .synoptic-tail { display: block; }
-}
 .syn-el { cursor: pointer; }
 .syn-el .syn-shape { fill: var(--panel); stroke: var(--dim); stroke-width: 1.5; transition: stroke 0.15s, fill 0.15s; }
 .syn-el text { fill: var(--dim); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; }
@@ -107,6 +103,10 @@ a { color: var(--cyan); }
   display: none;
 }
 .synoptic-tail svg { width: 100%; height: 100%; display: block; }
+@media (min-width: 1251px) {
+  /* beam axis: padding-top + 1250px * (30/1200) = 31.25px into the svg */
+  .synoptic-tail { display: block; }
+}
 .syn-scatter { stroke: var(--amber); stroke-width: 1; opacity: 0.25; stroke-dasharray: 3 4; }
 .syn-direct { opacity: 0.4; stroke-dasharray: none; }
 .syn-photon { fill: var(--amber); filter: drop-shadow(0 0 4px var(--amber)); }
