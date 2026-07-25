@@ -74,8 +74,8 @@ function elements(): Element[] {
       shape: undulatorMagnets(),
     },
     {
-      label: 'CONSOLE',
-      target: '#console',
+      label: 'ROLE',
+      target: '#role',
       cx: 425,
       halfWidth: 40,
       shape:
@@ -164,17 +164,7 @@ export function renderSynoptic(container: HTMLElement) {
 
   container.querySelectorAll<SVGGElement>('.syn-el').forEach((g) => {
     const go = () => {
-      const target = document.querySelector(g.dataset.target!);
-      if (!target) return;
-      if (target.classList.contains('console-dock')) {
-        // the console is a floating dock: open it instead of scrolling
-        target.classList.remove('collapsed');
-        const input = target.querySelector<HTMLInputElement>('#console-input');
-        if (input && !input.disabled) input.focus();
-        else target.querySelector<HTMLButtonElement>('#boot-btn')?.focus();
-        return;
-      }
-      target.scrollIntoView({ behavior: 'smooth' });
+      document.querySelector(g.dataset.target!)?.scrollIntoView({ behavior: 'smooth' });
     };
     g.addEventListener('click', go);
     g.addEventListener('keydown', (e) => {

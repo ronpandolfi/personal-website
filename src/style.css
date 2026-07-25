@@ -74,7 +74,8 @@ a { color: var(--cyan); }
 /* ---------- synoptic ---------- */
 /* full-bleed: the beam extends in from the left screen edge */
 .synoptic { background: var(--bg-raise); border-bottom: 1px solid var(--line); padding: 0.35rem 0 0.15rem; }
-.synoptic-inner svg { width: 100%; height: auto; display: block; }
+/* capped width, anchored left so the beam still bleeds in from the edge */
+.synoptic-inner svg { width: min(100%, 1250px); height: auto; display: block; margin-right: auto; }
 .syn-el { cursor: pointer; }
 .syn-el .syn-shape { fill: var(--panel); stroke: var(--dim); stroke-width: 1.5; transition: stroke 0.15s, fill 0.15s; }
 .syn-el text { fill: var(--dim); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; }
@@ -183,6 +184,29 @@ h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
 .card p { padding: 0.8rem 0.9rem 0; font-size: 0.9rem; color: var(--text); }
 .card-meta { padding: 0.5rem 0.9rem 0.9rem !important; font-size: 0.68rem !important; color: var(--dim) !important; letter-spacing: 0.05em; }
+
+.card-links { display: flex; gap: 1rem; padding: 0 0.9rem 0.9rem; margin-top: -0.35rem; }
+.card-links a { font-size: 0.68rem; letter-spacing: 0.08em; color: var(--cyan); text-decoration: none; }
+.card-links a:hover, .card-links a:focus-visible { text-decoration: underline; }
+
+/* ---------- contact badges ---------- */
+.contact-grid { display: flex; flex-wrap: wrap; gap: 1rem; }
+.contact-badge {
+  display: flex; align-items: center; gap: 0.75rem;
+  background: var(--panel); border: 1px solid var(--line);
+  padding: 0.7rem 1rem; text-decoration: none; min-width: 220px;
+  transition: border-color 0.15s;
+}
+.contact-badge:hover, .contact-badge:focus-visible { border-color: var(--amber); }
+.contact-icon {
+  width: 2.1rem; height: 2.1rem; display: grid; place-items: center;
+  border: 1px solid var(--line); color: var(--amber);
+  font-size: 0.85rem; font-weight: 600; flex-shrink: 0;
+}
+.contact-badge:hover .contact-icon { border-color: var(--amber); }
+.contact-text { display: flex; flex-direction: column; gap: 0.1rem; }
+.contact-label { font-size: 0.6rem; letter-spacing: 0.1em; color: var(--dim); }
+.contact-value { color: var(--text); font-size: 0.85rem; }
 
 .pub-list { list-style: none; padding: 0; }
 .pub { display: flex; gap: 1.25rem; padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
