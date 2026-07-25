@@ -195,9 +195,9 @@
             <option value="Qwen2.5-1.5B-Instruct-q4f16_1-MLC" selected>1.5B · BALANCED (~1 GB)</option>
             <option value="Qwen2.5-3B-Instruct-q4f16_1-MLC">3B · BEST (~2 GB)</option>
           </select>
+          <input class="console-input mono" id="console-input" type="text" placeholder="ask about my work…" disabled autocomplete="off" hidden />
           <button type="button" class="btn btn-primary" id="boot-btn">BOOT AGENT</button>
-          <input class="console-input mono" id="console-input" type="text" placeholder="ask about my work…" disabled autocomplete="off" />
-          <button type="submit" class="btn" id="send-btn" disabled>SEND</button>
+          <button type="submit" class="btn" id="send-btn" disabled hidden>SEND</button>
         </form>
         <p class="footnote footnote-warn">⚠ Small local models hallucinate: they can state wrong things confidently, smaller ones more so. Verify anything that matters against the links on this page, or just email me.</p>
         <p class="footnote">Runs on your GPU via WebGPU; nothing you type leaves your machine.</p>

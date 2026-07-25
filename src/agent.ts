@@ -70,6 +70,9 @@ export function setupAgentConsole() {
     status.textContent = 'ONLINE';
     status.classList.add('tag-live');
     bootBtn.style.display = 'none';
+    modelSelect.hidden = true;
+    input.hidden = false;
+    sendBtn.hidden = false;
     input.disabled = false;
     sendBtn.disabled = false;
     input.focus();
