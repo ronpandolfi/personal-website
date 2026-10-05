@@ -800,7 +800,12 @@
         }
         body #music-player.video-floating .player-body { border-top-left-radius: 8px !important; }
         body #music-player.video-floating::before { display: none; }
-        #audio-player:fullscreen { object-fit: contain; cursor: zoom-out; }
+        /* the docked-video rule (cover, 16:9 box, offsets) outranks a bare :fullscreen, so force the reset */
+        body #music-player .player-body #audio-player:fullscreen {
+            position: static !important; inset: auto !important; width: 100% !important; height: 100% !important;
+            aspect-ratio: auto !important; object-fit: contain !important; border-radius: 0 !important;
+            opacity: 1 !important; visibility: visible !important; background: #000; cursor: zoom-out;
+        }
         /* long titles must scroll inside the bar, not widen it */
         body #music-player .player-body, body #music-player .player-info-and-controls, body #music-player .song-info { min-width: 0; }
         /* dock the player centered under the page column */
