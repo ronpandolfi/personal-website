@@ -1068,12 +1068,19 @@
             
             const playlistData = [
                 { title: "Into the Dark Time", artist: "Ronald J Pandolfi x Suno", url: "media/into-the-dark-time.m4a", albumArtUrl: "covers/into-the-dark-time.jpg" },
-                { title: "Into the Dark Time (Music Video)", artist: "Ronald J Pandolfi x Suno", url: "media/into-the-dark-time.mp4", albumArtUrl: "covers/into-the-dark-time.jpg" },
+                { title: "Into the Dark Time (Music Video)", artist: "Ronald J Pandolfi x Suno", url: "media/into-the-dark-time.mp4", av1Url: "media/into-the-dark-time.av1.mp4", albumArtUrl: "covers/into-the-dark-time.jpg" },
                 { title: "Where's the Beam", artist: "Ronald J Pandolfi x Suno", url: "media/wheres-the-beam.m4a", albumArtUrl: "covers/wheres-the-beam.jpg" },
                 { title: "Signal to Noise", artist: "Ronald J Pandolfi x Suno", url: "media/signal-to-noise.m4a", albumArtUrl: "covers/signal-to-noise.jpg" },
                 { title: "Big Data Trucker", artist: "Ronald J Pandolfi x Suno", url: "media/big-data-trucker.m4a", albumArtUrl: "covers/big-data-trucker.jpg" },
                 { title: "Cradle of Artifacts", artist: "Ronald J Pandolfi x Suno", url: "media/cradle-of-artifacts.m4a", albumArtUrl: "covers/cradle-of-artifacts.jpg" },
             ];
+            // AV1 (10-bit, ~same size) looks far better than the H.264 file; use it where the browser decodes it.
+            const canAv1 = document.createElement('video').canPlayType('video/mp4; codecs="av01.0.08M.10"') === 'probably';
+            playlistData.forEach(t => {
+                if (!t.av1Url || !canAv1) return;
+                document.querySelectorAll(`[data-src="${t.url}"]`).forEach(c => { c.dataset.src = t.av1Url; });
+                t.url = t.av1Url;
+            });
 
             function setupMusicPlayer() {
                 let toastTimeout, isPlaylistToggling = false;
